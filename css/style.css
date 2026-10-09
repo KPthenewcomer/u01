@@ -9,12 +9,7 @@
   --focus-color: #005fcc;
   --shadow-color: rgba(0, 0, 0, 0.15);
 
-  --gradient: linear-gradient(
-    90deg,
-    #00c0fd 0%,
-    #e70faa 100%
-  );
-}
+  --gradient: linear-gradient(90deg, #00c0fd 0%, #e70faa 100%);
 }
 
 /* Grundinställningar */
@@ -127,18 +122,20 @@ ul {
 }
 
 .logo-top {
-  font-family: Consolas, "Courier New", monospace;
-  font-size: 32px;
+  font-family: "DejaVu Sans Mono", Consolas, monospace;
+  font-size: 34px;
+  font-weight: 700;
   line-height: 36px;
   letter-spacing: -2px;
+  font-variant-numeric: slashed-zero;
 }
 
 .logo-name {
   font-family: "DM Sans", sans-serif;
   font-size: 22px;
+  font-weight: 700;
   line-height: 23px;
 }
-
 
 .main-navigation,
 .social-links {
@@ -201,15 +198,24 @@ section {
   letter-spacing: -0.04em;
 }
 
-.profile-image {
-  width: min(100%, 280px);
+.profile-frame {
+  box-sizing: border-box;
+  width: 280px;
+  max-width: 100%;
+  padding: 6px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e70faa, #00c0fd);
+  flex-shrink: 0;
+}
+
+.profile-frame > .profile-image {
+  display: block;
+  width: 100%;
+  height: auto;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 6px solid transparent;
+  border: 0;
   border-radius: 50%;
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    var(--gradient) border-box;
   filter: grayscale(100%);
 }
 
@@ -543,4 +549,11 @@ section {
   .tools-grid {
     grid-template-columns: repeat(6, 1fr);
   }
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffffff;
 }
