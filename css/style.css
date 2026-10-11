@@ -1,29 +1,43 @@
+/* Färger */
+
 :root {
   --background-color: #ffffff;
   --heading-color: #42446e;
   --body-color: #666666;
+  --project-heading-color: #000000;
   --border-color: #ebeaed;
   --card-background: #ffffff;
   --badge-background: #d7ffe0;
-  --badge-color: #018c2f;
+  --badge-color: #006b24;
   --focus-color: #005fcc;
   --shadow-color: rgba(0, 0, 0, 0.15);
 
-  --gradient: linear-gradient(90deg, #00c0fd 0%, #e70faa 100%);
+  --gradient-blue: #00c0fd;
+  --gradient-pink: #e70faa;
+
+  --gradient: linear-gradient(
+    90deg,
+    var(--gradient-blue),
+    var(--gradient-pink)
+  );
+
+  --text-gradient: linear-gradient(90deg, #00749a, #b50982);
 }
 
 /* Grundinställningar */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 110px;
 }
 
 body {
-  min-width: 320px;
   margin: 0;
   background-color: var(--background-color);
   color: var(--body-color);
@@ -42,7 +56,7 @@ a {
 }
 
 a:focus-visible,
-button:focus-visible {
+summary:focus-visible {
   outline: 3px solid var(--focus-color);
   outline-offset: 4px;
 }
@@ -59,6 +73,7 @@ h2,
 h3 {
   color: var(--heading-color);
   font-family: "Poppins", sans-serif;
+  overflow-wrap: break-word;
 }
 
 h2 {
@@ -72,29 +87,49 @@ ul {
   list-style: none;
 }
 
+/* Tillgänglighet */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1rem;
+  background-color: var(--background-color);
+  color: var(--heading-color);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 /* Header */
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: calc(100% - 40px);
   min-height: 90px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.logo-link {
-  text-decoration: none;
-}
-
-.logo {
-  width: 80px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto auto;
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  line-height: 1;
+  gap: 1rem;
+  background-color: var(--background-color);
 }
 
 .logo-link {
@@ -105,29 +140,22 @@ ul {
 
 .logo {
   width: 97px;
-  height: 59px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1px;
+}
+
+.logo-symbol {
+  height: 35px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-weight: 700;
+  gap: 1px;
 }
 
-.logo-top,
-.logo-name {
-  background: linear-gradient(90deg, #00c0fd, #e70faa);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.logo-top {
-  font-family: "DejaVu Sans Mono", Consolas, monospace;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 36px;
-  letter-spacing: -2px;
-  font-variant-numeric: slashed-zero;
+.logo-symbol img {
+  flex-shrink: 0;
 }
 
 .logo-name {
@@ -135,6 +163,10 @@ ul {
   font-size: 22px;
   font-weight: 700;
   line-height: 23px;
+  background: var(--gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .main-navigation,
@@ -142,40 +174,109 @@ ul {
   display: none;
 }
 
+/* Mobilmeny utan JavaScript */
+
+.mobile-menu {
+  margin-left: auto;
+}
+
 .menu-button {
   width: 44px;
   height: 44px;
-  padding: 8px;
-  border: 0;
-  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
   cursor: pointer;
+  border-radius: 4px;
 }
 
-.menu-button span {
+.menu-button::-webkit-details-marker {
+  display: none;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-icon span {
   display: block;
   width: 28px;
   height: 3px;
-  margin: 5px 0;
   border-radius: 5px;
-  background-color: #222222;
+  background-color: var(--heading-color);
+}
+
+.mobile-menu[open] .menu-icon span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu[open] .menu-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu[open] .menu-icon span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-navigation {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+.mobile-navigation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-navigation-list a {
+  display: block;
+  padding: 0.75rem;
+  text-decoration: none;
+}
+
+.mobile-navigation-list a:hover {
+  text-decoration: underline;
+}
+
+/*
+  En öppen mobilmeny följer inte med under scrollning.
+  Det förhindrar att menyn täcker målet för ankarlänken.
+*/
+
+.site-header:has(.mobile-menu[open]) {
+  position: relative;
 }
 
 /* Gemensamma sektioner */
 
 main {
   width: calc(100% - 40px);
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-section {
-  scroll-margin-top: 30px;
-}
-
 .gradient-text {
-  background: var(--gradient);
+  background: var(--text-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+.section-description {
+  margin-top: 1rem;
+  font-size: 1.125rem;
 }
 
 /* Home */
@@ -192,29 +293,30 @@ section {
 }
 
 .home-content h1 {
-  color: var(--heading-color);
+  min-width: 0;
   font-size: clamp(2rem, 8vw, 3rem);
   line-height: 1.25;
   letter-spacing: -0.04em;
 }
 
 .profile-frame {
-  box-sizing: border-box;
   width: 280px;
   max-width: 100%;
   padding: 6px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #e70faa, #00c0fd);
+  background: linear-gradient(
+    180deg,
+    var(--gradient-pink),
+    var(--gradient-blue)
+  );
   flex-shrink: 0;
 }
 
-.profile-frame > .profile-image {
-  display: block;
+.profile-image {
   width: 100%;
   height: auto;
   aspect-ratio: 1;
   object-fit: cover;
-  border: 0;
   border-radius: 50%;
   filter: grayscale(100%);
 }
@@ -248,6 +350,10 @@ section {
   border-bottom: 2px solid var(--border-color);
 }
 
+.experience-item > div {
+  min-width: 0;
+}
+
 .experience-item h3 {
   color: var(--body-color);
   font-size: 1.25rem;
@@ -278,14 +384,9 @@ section {
   padding: 4rem 0;
 }
 
-.section-description {
-  margin-top: 1rem;
-  font-size: 1.125rem;
-}
-
 .technology-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem 1.5rem;
   margin: 3rem 0 4rem;
 }
@@ -314,12 +415,13 @@ section {
 
 .project-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
 
 .project-card {
+  min-width: 0;
   overflow: hidden;
   border-radius: 14px;
   background-color: var(--card-background);
@@ -337,7 +439,7 @@ section {
 }
 
 .project-content h3 {
-  color: #000000;
+  color: var(--project-heading-color);
   font-size: 1.2rem;
   font-weight: 500;
 }
@@ -349,12 +451,14 @@ section {
 
 .project-links {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1.25rem;
 }
 
 .project-links a {
+  padding: 0.25rem 0;
   font-size: 0.9rem;
   text-underline-offset: 0.2rem;
 }
@@ -376,13 +480,14 @@ section {
 }
 
 .contact-section address a {
-  background: var(--gradient);
+  background: var(--text-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   font-size: clamp(1.7rem, 6vw, 3rem);
   font-weight: 700;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 /* Footer */
@@ -397,9 +502,21 @@ section {
   font-weight: 500;
 }
 
+/* Bredare mobil och surfplatta */
+
+@media (min-width: 600px) {
+  .technology-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* Desktop */
 
 @media (min-width: 900px) {
+  html {
+    scroll-padding-top: 140px;
+  }
+
   body {
     font-family: "Poppins", sans-serif;
   }
@@ -410,8 +527,8 @@ section {
     min-height: 120px;
   }
 
-  .logo {
-    width: 100px;
+  .site-header:has(.mobile-menu[open]) {
+    position: sticky;
   }
 
   .main-navigation {
@@ -422,13 +539,15 @@ section {
   .navigation-list {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: clamp(0.5rem, 1.5vw, 2rem);
   }
 
   .navigation-list a {
-    color: var(--body-color);
+    display: block;
+    padding: 0.5rem 0;
     font-size: 0.9rem;
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .navigation-list a:hover {
@@ -437,33 +556,36 @@ section {
 
   .social-links {
     display: flex;
-    gap: 1rem;
-    margin-left: 2rem;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
   }
 
   .social-links a {
-    font-size: 0.8rem;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    min-height: 44px;
   }
 
-  .social-links a:hover {
-    text-decoration: underline;
+  .social-links img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
   }
 
-  .menu-button {
+  .mobile-menu {
     display: none;
   }
 
   main {
     width: calc(100% - 160px);
-    max-width: 1200px;
   }
 
   h2 {
     font-size: 2.5rem;
   }
-
-  /* Home desktop */
 
   .home-section {
     padding: 10rem 0 12rem;
@@ -473,19 +595,16 @@ section {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 5rem;
+    gap: 2rem;
   }
 
   .home-content h1 {
     font-size: clamp(2.5rem, 4vw, 3.6rem);
   }
 
-  .profile-image {
+  .profile-frame {
     width: 350px;
-    flex-shrink: 0;
   }
-
-  /* About desktop */
 
   .about-text {
     max-width: 760px;
@@ -493,42 +612,29 @@ section {
   }
 
   .experience-item {
-    display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 1.5rem 0;
   }
 
   .experience-information {
     align-items: flex-end;
     text-align: right;
+    flex-shrink: 0;
   }
 
-  /* Tech desktop */
-
   .technology-grid {
-    grid-template-columns: repeat(4, 1fr);
     gap: 4rem 3rem;
   }
 
-  .tools-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  /* Projects desktop */
-
   .project-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-top: 3.5rem;
   }
 
   .project-content {
     padding: 1.5rem;
   }
-
-  /* Contact desktop */
 
   .contact-section {
     padding: 11rem 0 14rem;
@@ -539,21 +645,22 @@ section {
   }
 }
 
-/* Extra wide desktop */
+/* Större desktop */
 
 @media (min-width: 1200px) {
   .technology-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .tools-grid {
-    grid-template-columns: repeat(6, 1fr);
+  .home-content {
+    gap: 5rem;
   }
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: #ffffff;
+/* Minskad rörelse */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
