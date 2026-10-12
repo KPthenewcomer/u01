@@ -9,7 +9,7 @@ Publicerad sida: https://kpthenewcomer.github.io/u01/
 Jag utgick från Pawans design och delade upp innehållet i Home, About, Tech Stack, Projects och Contact. Uppdelningen gjorde det lättare att koppla varje del av skissen till en tydlig struktur i HTML.
 
 En utmaning var att få profilbildens gradientram att fungera. När jag använde `filter: grayscale(100%)` på bilden påverkades även en ram som låg på samma element. Lösningen blev att lägga bilden i en separat `.profile-frame`. Då kunde ramen ha en färgad gradient medan själva bilden var svartvit. Gradientens färger är `#00c0fd` och `#e70faa`.
-Jag försökte först återskapa logotypen med text och CSS, men tecknens former blev annorlunda än i skissen. Därför bytte jag den övre delen till fem SVG-bilder. Det gör att formerna följer originalet och behåller sin skärpa när de skalas. Namnet Kevin/r under symbolen är fortfarande text.
+Jag försökte först återskapa logotypen med text och CSS, men tecknens former blev annorlunda än i skissen. Därför bytte jag den övre delen till fem SVG-bilder. Det gör att formerna följer originalet och behåller sin skärpa när de skalas. Namnet Kevin under symbolen är fortfarande text.
 
 Jag valde en silhuettbild av Michael Jackson eftersom jag inte hittade någon bra profilbild på mig själv som passade. Det fungerar som en tillfällig visuell lösning, men gör portfolion mindre personlig. Med mer tid skulle jag ersätta den med ett eget fotografi.
 
